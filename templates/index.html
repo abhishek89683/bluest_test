@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gradient-bg text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            Welcome to FinWise India
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 opacity-90">
+            Your AI-Powered Personal Financial Advisor for Middle-Class India
+        </p>
+        <div class="space-x-4">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+                    Go to Dashboard
+                </a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+                    Get Started Free
+                </a>
+                <a href="{{ url_for('login') }}" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition">
+                    Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Why Choose FinWise India?</h2>
+            <p class="text-gray-600 text-lg">Smart financial management tailored for Indian middle-class families</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-lg shadow-lg card-hover text-center">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">AI-Powered Advice</h3>
+                <p class="text-gray-600">Get personalized financial recommendations using advanced AI technology</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-lg card-hover text-center">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Smart Budgeting</h3>
+                <p class="text-gray-600">Track expenses, optimize spending, and achieve your financial goals</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-lg card-hover text-center">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Investment Guidance</h3>
+                <p class="text-gray-600">Learn about SIPs, mutual funds, and tax-saving options for Indians</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-gray-100 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Key Features</h2>
+            <p class="text-gray-600 text-lg">Everything you need to manage your finances effectively</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <i class="fas fa-wallet text-indigo-600 text-2xl mb-3"></i>
+                <h4 class="font-semibold mb-2">Expense Tracking</h4>
+                <p class="text-gray-600 text-sm">Monitor daily expenses and identify spending patterns</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <i class="fas fa-bullseye text-indigo-600 text-2xl mb-3"></i>
+                <h4 class="font-semibold mb-2">Goal Planning</h4>
+                <p class="text-gray-600 text-sm">Set and track financial goals with smart recommendations</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <i class="fas fa-hand-holding-usd text-indigo-600 text-2xl mb-3"></i>
+                <h4 class="font-semibold mb-2">Debt Management</h4>
+                <p class="text-gray-600 text-sm">Optimize debt repayment strategies</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <i class="fas fa-chart-line text-indigo-600 text-2xl mb-3"></i>
+                <h4 class="font-semibold mb-2">Financial Forecasting</h4>
+                <p class="text-gray-600 text-sm">Predict future savings and wealth growth</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-indigo-600 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Take Control of Your Finances?</h2>
+        <p class="text-xl mb-8 opacity-90">Join thousands of Indians making smarter financial decisions</p>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('dashboard') }}" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+                View Your Dashboard
+            </a>
+        {% else %}
+            <a href="{{ url_for('signup') }}" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+                Start Your Journey
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

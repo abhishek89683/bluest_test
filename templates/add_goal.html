@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Add Goal - FinWise India{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-bullseye text-indigo-600 text-2xl mr-3"></i>
+                <h1 class="text-2xl font-bold text-gray-900">Set Financial Goal</h1>
+            </div>
+
+            <form method="POST" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Goal Name <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., Buy a House, Emergency Fund, Child's Education">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="target_amount" class="block text-sm font-medium text-gray-700 mb-2">
+                            Target Amount (₹) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="target_amount" name="target_amount" step="0.01" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                               placeholder="500000">
+                    </div>
+
+                    <div>
+                        <label for="target_date" class="block text-sm font-medium text-gray-700 mb-2">
+                            Target Date <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" id="target_date" name="target_date" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                        Goal Category
+                    </label>
+                    <select id="category" name="category"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="General">🎯 General</option>
+                        <option value="Emergency">🚨 Emergency Fund</option>
+                        <option value="House">🏠 Buy House</option>
+                        <option value="Car">🚗 Buy Car</option>
+                        <option value="Education">📚 Education</option>
+                        <option value="Wedding">💒 Wedding</option>
+                        <option value="Vacation">✈️ Vacation</option>
+                        <option value="Retirement">👴 Retirement</option>
+                        <option value="Business">💼 Business</option>
+                        <option value="Other">📦 Other</option>
+                    </select>
+                </div>
+
+                <!-- Monthly Savings Calculator -->
+                <div class="bg-indigo-50 rounded-lg p-4" id="savingsCalculator" data-monthly-income="{{ current_user.monthly_income }}">
+                    <h3 class="text-sm font-semibold text-indigo-900 mb-3">Monthly Savings Required</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-600">Months to target:</span>
+                            <span id="monthsRemaining" class="font-semibold text-indigo-900 ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Monthly savings:</span>
+                            <span id="monthlySavings" class="font-semibold text-indigo-900 ml-2">-</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="text-xs text-gray-600">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Based on your current monthly income: ₹{{ "%.0f"|format(current_user.monthly_income) }}
+                        </div>
+                        <div id="savingsFeasibility" class="text-xs mt-1"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <a href="{{ url_for('dashboard') }}" 
+                       class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">
+                        <i class="fas fa-plus mr-2"></i>Create Goal
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Goal Suggestions -->
+        <div class="mt-8 bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Popular Financial Goals</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 cursor-pointer" onclick="setGoalTemplate('Emergency Fund', 500000, 'Emergency')">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-shield-alt text-green-600 mr-2"></i>
+                        <h4 class="font-semibold text-gray-800">Emergency Fund</h4>
+                    </div>
+                    <p class="text-sm text-gray-600">6 months of expenses for financial security</p>
+                    <p class="text-xs text-indigo-600 mt-1">Target: ₹5,00,000</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 cursor-pointer" onclick="setGoalTemplate('Down Payment', 1000000, 'House')">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-home text-blue-600 mr-2"></i>
+                        <h4 class="font-semibold text-gray-800">House Down Payment</h4>
+                    </div>
+                    <p class="text-sm text-gray-600">Initial payment for your dream home</p>
+                    <p class="text-xs text-indigo-600 mt-1">Target: ₹10,00,000</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 cursor-pointer" onclick="setGoalTemplate('Child Education', 2000000, 'Education')">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-graduation-cap text-purple-600 mr-2"></i>
+                        <h4 class="font-semibold text-gray-800">Child's Education</h4>
+                    </div>
+                    <p class="text-sm text-gray-600">Secure your child's future education</p>
+                    <p class="text-xs text-indigo-600 mt-1">Target: ₹20,00,000</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 cursor-pointer" onclick="setGoalTemplate('Retirement', 5000000, 'Retirement')">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-piggy-bank text-orange-600 mr-2"></i>
+                        <h4 class="font-semibold text-gray-800">Retirement Fund</h4>
+                    </div>
+                    <p class="text-sm text-gray-600">Comfortable retirement planning</p>
+                    <p class="text-xs text-indigo-600 mt-1">Target: ₹50,00,000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Set minimum date to today
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('target_date').setAttribute('min', today);
+
+// Store monthly income from data attribute
+const monthlyIncome = parseFloat(document.getElementById('savingsCalculator').getAttribute('data-monthly-income'));
+
+// Calculate monthly savings when inputs change
+function calculateSavings() {
+    const targetAmount = parseFloat(document.getElementById('target_amount').value) || 0;
+    const targetDate = new Date(document.getElementById('target_date').value);
+    const today = new Date();
+    
+    if (targetAmount > 0 && targetDate > today) {
+        const monthsRemaining = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24 * 30));
+        const monthlySavings = targetAmount / monthsRemaining;
+        
+        document.getElementById('monthsRemaining').textContent = monthsRemaining;
+        document.getElementById('monthlySavings').textContent = '₹' + monthlySavings.toFixed(0);
+        
+        // Check feasibility
+        const feasibilityDiv = document.getElementById('savingsFeasibility');
+        
+        if (monthlySavings <= monthlyIncome * 0.3) {
+            feasibilityDiv.innerHTML = '<span class="text-green-600">✓ Easily achievable</span>';
+        } else if (monthlySavings <= monthlyIncome * 0.5) {
+            feasibilityDiv.innerHTML = '<span class="text-yellow-600">⚠ Challenging but possible</span>';
+        } else {
+            feasibilityDiv.innerHTML = '<span class="text-red-600">✗ Consider extending timeline or reducing target</span>';
+        }
+    } else {
+        document.getElementById('monthsRemaining').textContent = '-';
+        document.getElementById('monthlySavings').textContent = '-';
+        document.getElementById('savingsFeasibility').textContent = '';
+    }
+}
+
+// Set goal template
+function setGoalTemplate(name, amount, category) {
+    document.getElementById('name').value = name;
+    document.getElementById('target_amount').value = amount;
+    document.getElementById('category').value = category;
+    
+    // Set target date to 3 years from now
+    const targetDate = new Date();
+    targetDate.setFullYear(targetDate.getFullYear() + 3);
+    document.getElementById('target_date').value = targetDate.toISOString().split('T')[0];
+    
+    calculateSavings();
+}
+
+// Add event listeners
+document.getElementById('target_amount').addEventListener('input', calculateSavings);
+document.getElementById('target_date').addEventListener('change', calculateSavings);
+
+// Initial calculation
+calculateSavings();
+</script>
+{% endblock %}
