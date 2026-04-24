@@ -178,33 +178,30 @@
 </div>
 
 <script>
-// Expense Chart
-const ctx = document.getElementById('expenseChart').getContext('2d');
-const expenseChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Food', 'Transport', 'Entertainment', 'Utilities', 'Others'],
-        datasets: [{
-            data: [3000, 1500, 800, 2000, 1200],
-            backgroundColor: [
-                '#EF4444',
-                '#F59E0B',
-                '#10B981',
-                '#3B82F6',
-                '#8B5CF6'
-            ],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-            }
+// Simple Expense Chart
+const ctx = document.getElementById('expenseChart');
+if (ctx) {
+    new Chart(ctx.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Food', 'Transport', 'Entertainment', 'Utilities', 'Others'],
+            datasets: [{
+                data: [3000, 1500, 800, 2000, 1200],
+                backgroundColor: [
+                    '#EF4444',
+                    '#F59E0B',
+                    '#10B981',
+                    '#3B82F6',
+                    '#8B5CF6'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
         }
-    }
-});
+    });
+}
 </script>
 {% endblock %}
